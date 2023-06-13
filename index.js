@@ -6,12 +6,12 @@ const isLinux = process.platform !== 'win32';
 
 async function isInstaClientExist(STAGE = 0) {
   try {
-    const contents = fs.readdirSync('bin', { withFileTypes: true });
+    const contents = fs.readdirSync(__dirname + '/bin', { withFileTypes: true });
     const instantClient = contents.find(
       (content) => content.isDirectory() && content.name.startsWith('instantclient')
     );
     if (!instantClient) return false;
-    return path.resolve('bin/' + instantClient.name);
+    return path.resolve(__dirname + '/bin/' + instantClient.name);
   } catch (error) {
     if (STAGE === 0) return false;
     throw error;
@@ -48,7 +48,7 @@ function getLatestVersion() {
 
 function downloadClient(downloadLink) {
   return new Promise((resolve) => {
-    const client = fs.createWriteStream('bin/file.zip');
+    const client = fs.createWriteStream(__dirname + '/bin/file.zip');
     let downloadLength = 0;
     https.get('https://' + downloadLink, (res) => {
       res.on('data', (chunk) => {
@@ -70,7 +70,7 @@ module.exports = async () => {
   //   const downloadLink = 'download.oracle.com/otn_software/nt/instantclient/2110000/instantclient-basiclite-windows.x64-21.10.0.0.0dbru.zip';
   process.stdout.write('Download: 0%');
   await downloadClient(downloadLink);
-  const unzip = isLinux ? 'unzip' : 'bin/unzip.exe';
-  execFileSync(unzip, ['-q', 'bin/file.zip', '-d', 'bin']);
+  const unzip = isLinux ? 'unzip' : __dirname + '/bin/unzip.exe';
+  execFileSync(unzip, ['-q', __dirname + '/bin/file.zip', '-d', __dirname + '/bin']);
   return isInstaClientExist(1);
 };
