@@ -1,6 +1,6 @@
 {
   "name": "oracle_thick_mode",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "main": "index.js",
   "license": "MIT",
   "repository": "git@github.com:rdev06/oracle_thick_mode.git",
