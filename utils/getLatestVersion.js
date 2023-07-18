@@ -14,11 +14,11 @@ module.exports = async (isUnix) => {
     } else if(process.arch === 'arm64'){
       platform = 'linux-arm-aarch64';
       software = 'linux';
-      client = 'linux.x64';
+      client = 'linux.arm64';
     }else {
       platform = 'linux-x86-64';
       software = 'linux';
-      client = 'linux.arm64';
+      client = 'linux.x64';
     }
   }
 
@@ -36,7 +36,7 @@ module.exports = async (isUnix) => {
             .find(
               (e) =>
                 e.includes(`download.oracle.com/otn_software/${software}/instantclient/`) &&
-                e.includes(`/instantclient-basiclite-${client}-`)
+                e.includes(`/instantclient-basiclite-${client}`)
             );
           const startIndex = latestVHtmlComponent.indexOf('download.oracle.com');
           const endIndex = latestVHtmlComponent.indexOf(`.zip'`);
