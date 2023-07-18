@@ -5,16 +5,20 @@ module.exports = async (isUnix) => {
   if (!isUnix) {
     platform = 'winx64-64';
     software = 'nt';
-    client = 'windows';
+    client = 'windows.x64';
   } else {
     if (process.platform == 'darwin') {
       platform = 'macos-intel-x86';
       software = 'mac';
-      client = 'macos';
-    } else {
+      client = 'macos.x64';
+    } else if(process.arch === 'arm64'){
+      platform = 'linux-arm-aarch64';
+      software = 'linux';
+      client = 'linux.x64';
+    }else {
       platform = 'linux-x86-64';
       software = 'linux';
-      client = 'linux';
+      client = 'linux.arm64';
     }
   }
 
@@ -32,7 +36,7 @@ module.exports = async (isUnix) => {
             .find(
               (e) =>
                 e.includes(`download.oracle.com/otn_software/${software}/instantclient/`) &&
-                e.includes(`/instantclient-basiclite-${client}.x64-`)
+                e.includes(`/instantclient-basiclite-${client}-`)
             );
           const startIndex = latestVHtmlComponent.indexOf('download.oracle.com');
           const endIndex = latestVHtmlComponent.indexOf(`.zip'`);
