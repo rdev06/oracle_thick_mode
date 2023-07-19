@@ -44,5 +44,10 @@ module.exports = async () => {
   await downloadClient(downloadLink);
   const unzip = isUnix ? 'unzip' : __dirname + '/bin/unzip.exe';
   execFileSync(unzip, ['-q', __dirname + '/bin/file.zip', '-d', __dirname + '/bin']);
-  return isInstaClientExist(1);
+  const currentPath = await isInstaClientExist(1);
+  const bs_index = currentPath.indexOf('instantclient');
+  const newPath = currentPath.slice(0, bs_index) + 'instantclient';
+  fs.renameSync(currentPath, newPath);
+  fs.rmSync(currentPath.slice(0, bs_index) + 'file.zip')
+  return newPath;
 };
